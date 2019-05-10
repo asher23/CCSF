@@ -1,11 +1,14 @@
-import { createSelector } from 'reselect';
+// import { createSelector } from 'reselect';
 
-const selectRouter = state => state.router;
+// // const selectRouter = state => state.router || initialState;
+// const selectIsLoggedIn = state => state.navBar.isLoggedIn;
 
-const makeSelectLocation = () =>
-  createSelector(
-    selectRouter,
-    routerState => routerState.location,
-  );
+// const makeSelectLocation = () =>
+//   createSelector(
+//     selectIsLoggedIn,
+//     // routerState => routerState.location,
+//   );
 
-export { makeSelectLocation };
+// // const makeSelectIsLoggedIn = () => createSelector(selectIsLoggedIn, );
+
+// export { makeSelectLocation, selectIsLoggedIn };
