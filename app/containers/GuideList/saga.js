@@ -1,15 +1,24 @@
 import { take, call, put, select, takeLatest } from 'redux-saga/effects';
 import API from 'utils/api';
+import history from 'utils/history';
 
 import { setGuides } from './actions';
+import { setGuide } from '../GuidePage/actions';
 
-import { selectGuideListInner } from './selectors';
-import { GET_GUIDES } from './constants';
+import { selectGuideListInner, selectCreateGuideForm } from './selectors';
+import { GET_GUIDES, CREATE_GUIDE } from './constants';
+
+// Individual exports for testing
+export default function* guideListSaga() {
+  // See example in containers/HomePage/saga.js
+  yield takeLatest(GET_GUIDES, getGuides);
+  yield takeLatest(CREATE_GUIDE, createGuide);
+}
 
 export function* getGuides() {
-  const guideList = yield select(selectGuideListInner);
   try {
-    const response = yield call(API.get, '/guides/5ccb3efa02d8166f253cd89a');
+    const response = yield call(API.get, '/guides');
+    console.log('responsesss', response);
   } catch (e) {
     // yield put(setRegisterStatus('error'));
     // yield put(setError(e));
@@ -17,8 +26,18 @@ export function* getGuides() {
   }
 }
 
-// Individual exports for testing
-export default function* guideListSaga() {
-  // See example in containers/HomePage/saga.js
-  yield takeLatest(GET_GUIDES, getGuides);
+export function* createGuide() {
+  const createGuideForm = yield select(selectCreateGuideForm);
+  try {
+    const response = yield call(API.post, '/guides', createGuideForm);
+    if (response.status === 201) {
+      history.push(`/guides/${response.data.id}`);
+      console.log('guideadta', response);
+    }
+  } catch (e) {
+    // yield put(setRegisterStatus('error'));
+    // yield put(setError(e));
+    console.log('error', e);
+  }
+  console.log('create guide form', createGuideForm);
 }

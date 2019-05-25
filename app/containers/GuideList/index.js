@@ -9,13 +9,24 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-
+import ItemList from 'components/ItemList';
+import {
+  Container,
+  Navbar,
+  Form,
+  FormControl,
+  Button,
+  Nav,
+  Col,
+  Row,
+} from 'react-bootstrap';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectGuideList from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import { setGuides, getGuides, logout } from './actions';
+import { setGuides, getGuides, createGuide } from './actions';
+import CreateGuideForm from '../../components/Forms/CreateGuideForm';
 
 export function GuideList(props) {
   const { dispatch } = props;
@@ -24,14 +35,36 @@ export function GuideList(props) {
   useInjectSaga({ key: 'guideList', saga });
 
   const [guidesList, setGuidesList] = useState('guidesList');
+  const [showCreate, setShowCreate] = useState('showCreate');
+  // setShowCreate(false);
 
+  useEffect(() => {
+    setShowCreate(false);
+  }, []);
   useEffect(() => {
     const guidesToSet = dispatch(getGuides());
     console.log('gudeis', guidesToSet);
     // dispatch(getGuides());
   }, []);
 
-  return <div />;
+  const onCreateGuideSubmit = (title, description) => {
+    dispatch(createGuide({ title, description }));
+  };
+  return (
+    <Container>
+      <Row>
+        <Button onClick={() => setShowCreate(!showCreate)}>Create Guide</Button>
+      </Row>
+      {showCreate && (
+        <Row>
+          <CreateGuideForm onSubmit={onCreateGuideSubmit} />
+        </Row>
+      )}
+      <Row>
+        <ItemList />
+      </Row>
+    </Container>
+  );
 }
 
 GuideList.propTypes = {

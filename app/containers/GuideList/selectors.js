@@ -7,6 +7,7 @@ import { initialState } from './reducer';
 
 const selectGuideListDomain = state => state.guideList || initialState;
 const selectGuideListInner = state => state.guideList.guideList;
+const selectCreateGuideForm = state => state.guideList.createGuideForm;
 /**
  * Other specific selectors
  */
@@ -22,4 +23,4 @@ const makeSelectGuideList = () =>
   );
 
 export default makeSelectGuideList;
-export { selectGuideListDomain, selectGuideListInner };
+export { selectGuideListDomain, selectGuideListInner, selectCreateGuideForm };

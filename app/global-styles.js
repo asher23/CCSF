@@ -27,6 +27,11 @@ const GlobalStyle = createGlobalStyle`
     font-family: Georgia, Times, 'Times New Roman', serif;
     line-height: 1.5em;
   }
+
+  .background-for-container {
+    min-height: calc(100vh - 50px);
+    background-color: red;
+  }
 `;
 
 export default GlobalStyle;

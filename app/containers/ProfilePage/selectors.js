@@ -6,7 +6,7 @@ import { initialState } from './reducer';
  */
 
 const selectProfilePageDomain = state => state.profilePage || initialState;
-const selectUserState = state => state.navBar.user;
+const selectUserState = state => state.app.user;
 
 /**
  * Other specific selectors

@@ -4,7 +4,12 @@
  *
  */
 
-import { DEFAULT_ACTION, SET_GUIDES, GET_GUIDES } from './constants';
+import {
+  DEFAULT_ACTION,
+  SET_GUIDES,
+  GET_GUIDES,
+  CREATE_GUIDE,
+} from './constants';
 
 export function defaultAction() {
   return {
@@ -22,5 +27,12 @@ export function setGuides(guides) {
 export function getGuides() {
   return {
     type: GET_GUIDES,
+  };
+}
+
+export function createGuide(createGuideForm) {
+  return {
+    type: CREATE_GUIDE,
+    createGuideForm,
   };
 }

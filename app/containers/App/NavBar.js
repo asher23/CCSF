@@ -4,39 +4,31 @@
  *
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { NavLink } from 'react-router-dom';
 import { Navbar, Form, FormControl, Button, Nav } from 'react-bootstrap';
+import { createStructuredSelector } from 'reselect';
 
 import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
-import makeSelectNavBar from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import { login, logout, checkUserLoggedIn } from './actions';
+import { login, logout } from './actions';
+import { makeSelectAuthStatus } from './selectors';
 
 export function NavBar(props) {
-  const { dispatch, navBar } = props;
-
-  useInjectReducer({ key: 'navBar', reducer });
-  useInjectSaga({ key: 'navBar', saga });
+  const { dispatch, authStatus, children } = props;
 
   const [username, setUsername] = useState('username');
   const [password, setPassword] = useState('password');
 
   const onSubmit = e => {
     e.preventDefault();
-    console.log('efienf', e);
     dispatch(login(username, password));
   };
-
-  useEffect(() => {
-    dispatch(checkUserLoggedIn());
-  }, []);
 
   const navLinkStyle = {
     textDecoration: 'none',
@@ -48,14 +40,19 @@ export function NavBar(props) {
     color: 'red',
   };
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar
+      fixed="top"
+      style={{ height: '50px', marginBottom: '50px' }}
+      bg="dark"
+      variant="dark"
+    >
       <Navbar.Brand>
         <NavLink style={navLinkStyle} activeStyle={activeStyle} to="/home">
           FCSF
         </NavLink>
       </Navbar.Brand>
       <Nav className="mr-auto">
-        {navBar.isLoggedIn ? (
+        {authStatus === 'authenticated' ? (
           <>
             <Nav.Item>
               <NavLink
@@ -98,7 +95,7 @@ export function NavBar(props) {
         )}
       </Nav>
 
-      {!navBar.isLoggedIn ? (
+      {authStatus !== 'authenticated' ? (
         <Form onSubmit={e => onSubmit(e)} inline>
           <FormControl
             onChange={e => setUsername(e.target.value)}
@@ -131,11 +128,12 @@ export function NavBar(props) {
 
 NavBar.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  navBar: PropTypes.object.isRequired,
+  authStatus: PropTypes.string.isRequired,
+  children: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
-  navBar: makeSelectNavBar(),
+  authStatus: makeSelectAuthStatus(),
 });
 
 function mapDispatchToProps(dispatch) {

@@ -1,14 +1,21 @@
-// import { createSelector } from 'reselect';
-
-// // const selectRouter = state => state.router || initialState;
-// const selectIsLoggedIn = state => state.navBar.isLoggedIn;
-
+import { createSelector } from 'reselect';
+import { initialState } from './reducer';
+// const selectRouter = state => state.router || initialState;
+const selectApp = state => state.app || initialState;
+const selectAuthStatus = state => state.app.authStatus || 'unAuthenticated';
+const selectFormState = state => state.app.formState;
 // const makeSelectLocation = () =>
 //   createSelector(
 //     selectIsLoggedIn,
 //     // routerState => routerState.location,
 //   );
 
-// // const makeSelectIsLoggedIn = () => createSelector(selectIsLoggedIn, );
+const makeSelectAuthStatus = () =>
+  createSelector(
+    selectApp,
+    subState => subState.authStatus,
+  );
 
-// export { makeSelectLocation, selectIsLoggedIn };
+// const makeSelectIsLoggedIn = () => createSelector(selectIsLoggedIn, );
+
+export { makeSelectAuthStatus, selectAuthStatus, selectFormState };
