@@ -17,10 +17,10 @@ import { useInjectSaga } from 'utils/injectSaga';
 import reducer from './reducer';
 import saga from './saga';
 import { login, logout } from './actions';
-import { makeSelectAuthStatus } from './selectors';
+import { makeSelectAuthStatus, selectUser } from './selectors';
 
 export function NavBar(props) {
-  const { dispatch, authStatus, children } = props;
+  const { dispatch, authStatus, children, user } = props;
 
   const [username, setUsername] = useState('username');
   const [password, setPassword] = useState('password');
@@ -33,17 +33,17 @@ export function NavBar(props) {
   const navLinkStyle = {
     textDecoration: 'none',
     marginRight: '10px',
-    color: 'white',
+    color: 'black',
   };
   const activeStyle = {
     fontWeight: 'bold',
-    color: 'red',
+    color: 'white',
   };
   return (
     <Navbar
       fixed="top"
       style={{ height: '50px', marginBottom: '50px' }}
-      bg="dark"
+      // bg="dark"
       variant="dark"
     >
       <Navbar.Brand>
@@ -76,9 +76,18 @@ export function NavBar(props) {
               <NavLink
                 activeStyle={activeStyle}
                 style={navLinkStyle}
-                to="/profile"
+                to={`/profile/${user.id}`}
               >
                 Profile
+              </NavLink>
+            </Nav.Item>
+            <Nav.Item>
+              <NavLink
+                activeStyle={activeStyle}
+                style={navLinkStyle}
+                to="/settings"
+              >
+                Settings
               </NavLink>
             </Nav.Item>
           </>
@@ -130,10 +139,12 @@ NavBar.propTypes = {
   dispatch: PropTypes.func.isRequired,
   authStatus: PropTypes.string.isRequired,
   children: PropTypes.array,
+  user: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   authStatus: makeSelectAuthStatus(),
+  user: selectUser,
 });
 
 function mapDispatchToProps(dispatch) {

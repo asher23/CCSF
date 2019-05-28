@@ -4,6 +4,8 @@ import { initialState } from './reducer';
 const selectApp = state => state.app || initialState;
 const selectAuthStatus = state => state.app.authStatus || 'unAuthenticated';
 const selectFormState = state => state.app.formState;
+const selectUser = state => state.app.user;
+
 // const makeSelectLocation = () =>
 //   createSelector(
 //     selectIsLoggedIn,
@@ -18,4 +20,4 @@ const makeSelectAuthStatus = () =>
 
 // const makeSelectIsLoggedIn = () => createSelector(selectIsLoggedIn, );
 
-export { makeSelectAuthStatus, selectAuthStatus, selectFormState };
+export { makeSelectAuthStatus, selectUser, selectAuthStatus, selectFormState };

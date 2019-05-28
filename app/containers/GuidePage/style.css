@@ -1,0 +1,38 @@
+.hide-author-tools {
+  overflow: hidden;
+  opacity: 0;
+  max-height: 0px;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+.show-author-tools {
+  opacity: 100;
+  -webkit-transition: all 0.5s; /* Safari */
+  max-height: 500px;
+  transition: all 0.5s;
+}
+
+.hide-section-form {
+  overflow: hidden;
+  opacity: 0;
+  max-height: 0px;
+  -webkit-transition: all 0.7s;
+  -moz-transition: all 0.7s;
+  transition: all 0.7s;
+  overflow: hidden;
+}
+
+.show-section-form {
+  opacity: 100;
+  -webkit-transition: all 0.7s; /* Safari */
+  max-height: 5000px;
+  transition: all 0.7s;
+  padding: 45px;
+  border: 6px solid #98d3e1;
+  border-top: 0px;
+}
+.carousel-control-next-icon {
+  color: red;
+}

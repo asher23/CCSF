@@ -29,8 +29,8 @@ import { setGuides, getGuides, createGuide } from './actions';
 import CreateGuideForm from '../../components/Forms/CreateGuideForm';
 
 export function GuideList(props) {
-  const { dispatch } = props;
-
+  const { dispatch, guideList } = props;
+  const { guides } = guideList;
   useInjectReducer({ key: 'guideList', reducer });
   useInjectSaga({ key: 'guideList', saga });
 
@@ -51,19 +51,23 @@ export function GuideList(props) {
     dispatch(createGuide({ title, description }));
   };
   return (
-    <Container>
-      <Row>
-        <Button onClick={() => setShowCreate(!showCreate)}>Create Guide</Button>
-      </Row>
-      {showCreate && (
+    <div className="background-for-container">
+      <Container>
         <Row>
-          <CreateGuideForm onSubmit={onCreateGuideSubmit} />
+          <Button onClick={() => setShowCreate(!showCreate)}>
+            Create Guide
+          </Button>
         </Row>
-      )}
-      <Row>
-        <ItemList />
-      </Row>
-    </Container>
+        {showCreate && (
+          <Row>
+            <CreateGuideForm onSubmit={onCreateGuideSubmit} />
+          </Row>
+        )}
+        <Row>
+          <Col>{guides && <ItemList items={guides} />}</Col>
+        </Row>
+      </Container>
+    </div>
   );
 }
 

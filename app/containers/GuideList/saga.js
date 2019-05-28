@@ -18,7 +18,7 @@ export default function* guideListSaga() {
 export function* getGuides() {
   try {
     const response = yield call(API.get, '/guides');
-    console.log('responsesss', response);
+    yield put(setGuides(response.data));
   } catch (e) {
     // yield put(setRegisterStatus('error'));
     // yield put(setError(e));

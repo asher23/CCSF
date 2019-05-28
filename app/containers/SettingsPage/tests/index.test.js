@@ -1,6 +1,6 @@
 /**
  *
- * Tests for ItemList
+ * Tests for SettingsPage
  *
  * @see https://github.com/react-boilerplate/react-boilerplate/tree/master/docs/testing
  *
@@ -10,12 +10,13 @@ import React from 'react';
 import { render } from 'react-testing-library';
 // import 'jest-dom/extend-expect'; // add some helpful assertions
 
-import ItemList from '../index';
+import { SettingsPage } from '../index';
 
-describe('<ItemList />', () => {
+describe('<SettingsPage />', () => {
   it('Expect to not log errors in console', () => {
     const spy = jest.spyOn(global.console, 'error');
-    render(<ItemList />);
+    const dispatch = jest.fn();
+    render(<SettingsPage dispatch={dispatch} />);
     expect(spy).not.toHaveBeenCalled();
   });
 
@@ -31,7 +32,7 @@ describe('<ItemList />', () => {
   it.skip('Should render and match the snapshot', () => {
     const {
       container: { firstChild },
-    } = render(<ItemList />);
+    } = render(<SettingsPage />);
     expect(firstChild).toMatchSnapshot();
   });
 });

@@ -7,6 +7,7 @@ import { initialState } from './reducer';
 
 const selectProfilePageDomain = state => state.profilePage || initialState;
 const selectUserState = state => state.app.user;
+const selectProfileId = state => state.profilePage.profile.id;
 
 /**
  * Other specific selectors
@@ -30,4 +31,4 @@ const makeSelectUser = () =>
   );
 
 export default makeSelectProfilePage;
-export { selectProfilePageDomain, makeSelectUser };
+export { selectProfilePageDomain, makeSelectUser, selectProfileId };

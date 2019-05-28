@@ -14,11 +14,13 @@ import { useInjectSaga } from 'utils/injectSaga';
 import HomePage from 'containers/HomePage/Loadable';
 import ProfilePage from 'containers/ProfilePage';
 import GuidePage from 'containers/GuidePage';
+import EditGuidePage from 'containers/GuidePage/EditGuide';
 import RegisterPage from 'containers/Register';
 import { createStructuredSelector } from 'reselect';
 import GuideList from 'containers/GuideList';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Loading from 'components/Loading';
+import SettingsPage from 'containers/SettingsPage';
 
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -29,7 +31,6 @@ import saga from './saga';
 import { authenticate } from './actions';
 import ProtectedRoute from './ProtectedRoute';
 import { makeSelectAuthStatus } from './selectors';
-
 export function App(props) {
   const { dispatch, authStatus } = props;
 
@@ -59,21 +60,18 @@ export function App(props) {
           <ProtectedRoute
             authStatus={authStatus}
             exact
-            path="/guides/:id"
-            component={GuidePage}
+            path="/guides/:id/edit"
+            component={EditGuidePage}
           />
           <ProtectedRoute
             authStatus={authStatus}
             exact
-            path="/guides"
-            component={GuideList}
+            path="/settings"
+            component={SettingsPage}
           />
-          <ProtectedRoute
-            authStatus={authStatus}
-            exact
-            path="/profile"
-            component={ProfilePage}
-          />
+          <Route exact path="/guides/:id" component={GuidePage} />
+          <Route exact path="/guides" component={GuideList} />
+          <Route path="/profile/:id" component={ProfilePage} />
           <Route exact path="/register" component={RegisterPage} />
           <Route path="/" component={HomePage} />
           <Route component={NotFoundPage} />

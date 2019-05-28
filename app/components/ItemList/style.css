@@ -1,0 +1,22 @@
+.imageList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  /* margin: 30px; */
+  /* width: 100%; */
+  grid-gap: 10px;
+  grid-auto-rows: 15px;
+}
+
+.something {
+  width: 250px;
+  border: 5px solid black;
+}
+
+.something img {
+  width: 100%;
+  height: 150px;
+}
+
+.something a {
+  color: white;
+}

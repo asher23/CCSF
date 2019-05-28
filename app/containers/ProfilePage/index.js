@@ -20,27 +20,39 @@ import {
   Row,
 } from 'react-bootstrap';
 
+import ItemList from 'components/ItemList';
+
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectProfilePage, { makeSelectUser } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
+import { setProfile, getProfile, getProfileGuides } from './actions';
 
-export function ProfilePage({ profilePage, user }) {
+export function ProfilePage({ profilePage, user, match, dispatch }) {
   useInjectReducer({ key: 'profilePage', reducer });
   useInjectSaga({ key: 'profilePage', saga });
-
-  const [viewing, setViewing] = useState('viewing');
+  const { guides, profile, codeLabs } = profilePage;
+  const [viewing, setViewing] = useState('guides');
   console.log('props from profielpage', user);
 
   const renderView = () => {
     if (viewing === 'guides') {
-      return <div>Guides</div>;
+      return (
+        <Row>
+          <Col>{guides && <ItemList items={guides} />}</Col>
+        </Row>
+      );
     }
     if (viewing === 'codeLabs') {
       return <div>CodeLAbs</div>;
     }
   };
+  useEffect(() => {
+    dispatch(setProfile({ id: match.params.id }));
+    dispatch(getProfile());
+    dispatch(getProfileGuides());
+  }, []);
   const switchStyle = { border: '2px solid red' };
   return (
     <Container>

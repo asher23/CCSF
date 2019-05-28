@@ -7,13 +7,13 @@ import { initialState } from './reducer';
 
 const selectGuidePageDomain = state => state.guidePage || initialState;
 const selectGuideId = state => state.guidePage.guide.id;
-
+const selectEditGuide = state => state.guidePage.editGuide;
 const selectCreatorId = state => {
   if (state.guidePage) {
-    return state.guidePage.guide.creatorId
+    return state.guidePage.guide.creatorId;
   }
-  return null
-}
+  return null;
+};
 // const selectCreatorId = state => state.guidePage.guide.creatorId;
 const selectUserId = state => state.app.user.id;
 /**
@@ -31,11 +31,16 @@ const makeSelectGuidePage = () =>
   );
 
 const makeSelectIsCreator = () =>
-    createSelector(
-      selectCreatorId,
-      selectUserId,
-      (creatorId, userId) => creatorId === userId
-    );
+  createSelector(
+    selectCreatorId,
+    selectUserId,
+    (creatorId, userId) => creatorId === userId,
+  );
 
 export default makeSelectGuidePage;
-export { selectGuidePageDomain, selectGuideId, makeSelectIsCreator };
+export {
+  selectGuidePageDomain,
+  selectGuideId,
+  makeSelectIsCreator,
+  selectEditGuide,
+};

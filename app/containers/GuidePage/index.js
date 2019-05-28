@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /**
  *
  * GuidePage
@@ -6,27 +9,229 @@
 
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import {
-  Container,
-  Navbar,
-  Form,
-  FormControl,
-  Button,
-  Nav,
-  Col,
-  Row,
-} from 'react-bootstrap';
+import { Container, Button, Row, Carousel } from 'react-bootstrap';
+import Lightbox from 'react-image-lightbox';
+
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectGuidePage, { makeSelectIsCreator } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import { setGuide, getGuide } from './actions';
-import EditGuide from './EditGuide';
+import './style.css';
+import SectionList from '../../components/GuidePage/SectionList';
+
+export function GuidePage(props) {
+  const { dispatch, guidePage, match, isCreator } = props;
+  const { guide } = guidePage;
+  const { title, description, sections, photos } = guide;
+  useInjectReducer({ key: 'guidePage', reducer });
+  useInjectSaga({ key: 'guidePage', saga });
+
+  const [showAuthorBar, setShowAuthorBar] = useState(false);
+  const [lightBoxState, setLightBoxState] = useState(false);
+  const [lightBoxPhotoIndex, setLightBoxPhotoIndex] = useState(0);
+
+  useEffect(() => {
+    dispatch(setGuide({ id: match.params.id }));
+    dispatch(getGuide());
+  }, []);
+
+  if (!guide.sections || !guide.title) return null;
+  return (
+    <div className="background-for-container">
+      <Container style={{ textAlign: 'center' }}>
+        <div style={{ width: '80%', display: 'inline-block' }}>
+          {isCreator && (
+            <>
+              <Row>
+                <div
+                  className={
+                    showAuthorBar ? 'show-author-tools' : 'hide-author-tools'
+                  }
+                >
+                  Author Tools:
+                  <Button variant="dark" type="button">
+                    <Link to={`/guides/${guide.id}/edit`}>
+                      Edit <i className="far fa-edit" />
+                    </Link>
+                  </Button>
+                </div>
+              </Row>
+              <Row>
+                <Button
+                  onClick={() => setShowAuthorBar(!showAuthorBar)}
+                  size="lg"
+                >
+                  {showAuthorBar ? (
+                    <i className="fas fa-caret-up" />
+                  ) : (
+                    <i className="fas fa-caret-down" />
+                  )}
+                </Button>
+              </Row>
+            </>
+          )}
+          <Row style={{ display: 'inline-block', margin: '15px auto' }}>
+            <p style={{ fontSize: '50px', fontWeight: 'bold' }}>{title}</p>
+          </Row>
+
+          <Row>
+            <p style={{ fontSize: '25px' }}>{description}</p>{' '}
+          </Row>
+        </div>
+        <Row>
+          <Carousel
+            style={{ backgroundColor: 'black', width: '100%', margin: 'auto' }}
+          >
+            {photos.map((photo, idx) => {
+              return (
+                <Carousel.Item key={photo.url}>
+                  <img
+                    onClick={() => {
+                      setLightBoxState(true);
+                      setLightBoxPhotoIndex(idx);
+                    }}
+                    src={photo.url}
+                    alt="carousel slide"
+                    style={{
+                      objectFit: 'scale-down',
+                      height: '500px',
+                      width: '100%',
+                    }}
+                  />
+                </Carousel.Item>
+              );
+            })}
+          </Carousel>
+          {lightBoxState && (
+            <Lightbox
+              mainSrc={photos[lightBoxPhotoIndex].url}
+              nextSrc={photos[(lightBoxPhotoIndex + 1) % photos.length].url}
+              prevSrc={
+                photos[(lightBoxPhotoIndex + photos.length - 1) % photos.length]
+                  .url
+              }
+              clickOutsideToClose
+              onCloseRequest={() => {
+                setLightBoxState(false);
+              }}
+              onMovePrevRequest={() =>
+                setLightBoxPhotoIndex(
+                  (lightBoxPhotoIndex + photos.length - 1) % photos.length,
+                )
+              }
+              onMoveNextRequest={() =>
+                setLightBoxPhotoIndex((lightBoxPhotoIndex + 1) % photos.length)
+              }
+            />
+          )}
+        </Row>
+        <div style={{ width: '80%', display: 'inline-block' }}>
+          <SectionList sections={sections} />
+        </div>
+      </Container>
+    </div>
+  );
+}
+
+GuidePage.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = createStructuredSelector({
+  guidePage: makeSelectGuidePage(),
+  isCreator: makeSelectIsCreator(),
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+  };
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+export default compose(withConnect)(GuidePage);
+
+/*  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const onDragEnd = function(result) {
+    console.log('drag end result: ', result);
+
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
+    console.log('itemss', items);
+    const itemss = reorder(
+      items,
+      result.source.index,
+      result.destination.index,
+    );
+
+    setItems(itemss);
+  };
+<DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="droppable">
+                {(provided, snapshot) => (
+                  <div
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    style={getListStyle(snapshot.isDraggingOver)}
+                  >
+                    {items.map((item, index) => (
+                      <Draggable
+                        key={item.id}
+                        draggableId={item.id}
+                        index={index}
+                      >
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style,
+                            )}
+                          >
+                            {item.content}
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+            import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
 const getItems = count =>
   Array.from({ length: count }, (v, k) => k).map(k => ({
     id: `item-${k}`,
@@ -63,128 +268,4 @@ const getListStyle = isDraggingOver => ({
   padding: grid,
   width: 250,
 });
-
-export function GuidePage(props) {
-  const { dispatch, guidePage, match, isCreator } = props;
-  const { guide, editGuide } = guidePage;
-  useInjectReducer({ key: 'guidePage', reducer });
-  useInjectSaga({ key: 'guidePage', saga });
-
-  const [items, setItems] = useState(getItems(3));
-  const [editMode, setEditMode] = useState(false);
-  console.log('props', props);
-  useEffect(() => {
-    dispatch(setGuide({ id: match.params.id }));
-    dispatch(getGuide());
-    // setItems(getItems(10));
-  }, []);
-  console.log('itemss', items);
-  // useEffect(() => {
-  // }, items)
-
-  const onDragEnd = function(result) {
-    console.log('drag end result: ', result);
-
-    // dropped outside the list
-    if (!result.destination) {
-      return;
-    }
-    console.log('itemss', items);
-    const itemss = reorder(
-      items,
-      result.source.index,
-      result.destination.index,
-    );
-
-    setItems(itemss);
-  };
-
-  return (
-    <div className="background-for-container">
-      <Container
-        style={{
-          backgroundColor: 'white',
-          textAlign: 'center',
-          paddingTop: '30px',
-        }}
-      >
-        <Row style={{ display: 'inline-block', width: '80%' }}>
-          {isCreator ? (
-            <Button onClick={() => setEditMode(true)} type="button">
-              Edit
-            </Button>
-          ) : null}
-        </Row>
-        {editMode ? (
-          <EditGuide guide={editGuide} />
-        ) : (
-          <>
-            <Row style={{ display: 'inline-block', width: '80%' }}>
-              <h1>{guide.title}</h1>
-            </Row>
-            <Row style={{ display: 'inline-block', width: '80%' }}>
-              <h2>{guide.description}</h2>
-            </Row>
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="droppable">
-                {(provided, snapshot) => (
-                  <div
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}
-                    style={getListStyle(snapshot.isDraggingOver)}
-                  >
-                    {items.map((item, index) => (
-                      <Draggable
-                        key={item.id}
-                        draggableId={item.id}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={getItemStyle(
-                              snapshot.isDragging,
-                              provided.draggableProps.style,
-                            )}
-                          >
-                            {item.content}
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </DragDropContext>
-          </>
-        )}
-      </Container>
-    </div>
-  );
-}
-
-GuidePage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = createStructuredSelector({
-  guidePage: makeSelectGuidePage(),
-  isCreator: makeSelectIsCreator(),
-  // guide: makeSelectGuidePage().guide,
-});
-
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
-
-const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-);
-
-export default compose(withConnect)(GuidePage);
+  */

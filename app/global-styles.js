@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'react-image-lightbox/style.css'; // This only needs to be imported once in your app
 
 const GlobalStyle = createGlobalStyle`
   html,
@@ -30,7 +31,25 @@ const GlobalStyle = createGlobalStyle`
 
   .background-for-container {
     min-height: calc(100vh - 50px);
-    background-color: red;
+    background-color: #98D3E1;
+  }
+
+  .container {
+    background-color: #EFF7D4
+  }
+
+  .navbar {
+    background-color: #E06287
+  }
+  
+  .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    background-color: #EFF7D4;
+  }
+
+
+
+  .tab-content {
+    height: 100%;
   }
 `;
 
