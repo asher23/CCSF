@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Card, Button } from 'react-bootstrap';
 function Item(props) {
-  const { title, description, id, sections } = props.item;
+  const { title, description, id } = props.item;
   const itemListRef = useRef(id);
   const [spans, setSpans] = useState(0);
   const [showMore, setShowMore] = useState(false);
@@ -19,6 +19,8 @@ function Item(props) {
   if (props.item.photos) {
     if (props.item.photos[0]) imgSrc = props.item.photos[0].url;
   }
+  let routePath = 'guides';
+  if (props.item.joining) routePath = 'codeLabs';
   return (
     <div style={{ gridRowEnd: `span ${spans}` }} className="something">
       <Card style={{ height: '100%' }}>
@@ -28,7 +30,7 @@ function Item(props) {
             <Card.Title>{title}</Card.Title>
             <Card.Text>{description} </Card.Text>
             <Button block variant="primary">
-              <Link to={`/guides/${id}`}>Visit!</Link>
+              <Link to={`/${routePath}/${id}`}>Visit!</Link>
             </Button>
           </Card.Body>
         </div>

@@ -38,15 +38,22 @@ const GlobalStyle = createGlobalStyle`
     background-color: #EFF7D4
   }
 
-  .navbar {
-    background-color: #E06287
-  }
+  // .navbar {
+  //   background-color: gray;
+  // }
   
   .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
     background-color: #EFF7D4;
   }
 
+  .make-select-dark .carousel-control-next-icon {
+    background-image : url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000000' viewBox='0 0 8 8'%3E%3Cpath d='M1.5 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E")
+  }
 
+
+   .make-select-dark .carousel-control-prev-icon {
+     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3e%3c/svg%3e")
+    }
 
   .tab-content {
     height: 100%;

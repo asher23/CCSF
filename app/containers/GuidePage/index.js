@@ -43,8 +43,13 @@ export function GuidePage(props) {
 
   if (!guide.sections || !guide.title) return null;
   return (
-    <div className="background-for-container">
-      <Container style={{ textAlign: 'center' }}>
+    <div style={{ backgroundColor: 'rgb(239, 247, 212, 0.4)' }} className="">
+      <Container
+        style={{
+          backgroundColor: 'rgb(239, 247, 212, 0.2)',
+          textAlign: 'center',
+        }}
+      >
         <div style={{ width: '80%', display: 'inline-block' }}>
           {isCreator && (
             <>
@@ -76,61 +81,101 @@ export function GuidePage(props) {
               </Row>
             </>
           )}
-          <Row style={{ display: 'inline-block', margin: '15px auto' }}>
-            <p style={{ fontSize: '50px', fontWeight: 'bold' }}>{title}</p>
-          </Row>
-
-          <Row>
-            <p style={{ fontSize: '25px' }}>{description}</p>{' '}
+          <Row
+            style={{
+              display: 'inline-block',
+              margin: '15px auto',
+              textAlign: 'center',
+            }}
+          >
+            <p style={{ fontSize: '60px', fontWeight: 'bold' }}>{title}</p>
+            <div style={{ textAlign: 'right' }}>
+              <p
+                style={{
+                  display: 'inline-block',
+                  fontSize: '20px',
+                  textAlign: 'right',
+                  textDecoration: 'italics',
+                  color: 'black',
+                  lineheight: '20px',
+                  backgroundColor: 'aqua',
+                  padding: '0px 3px',
+                }}
+              >
+                Johnathon Doe
+              </p>
+            </div>
+            <p
+              style={{
+                fontSize: '25px',
+                borderTop: '1px solid black',
+                borderBottom: '1px solid black',
+                fontWeight: '100',
+                paddingTop: '30px',
+                paddingBottom: '30px',
+              }}
+            >
+              {description}
+            </p>
           </Row>
         </div>
-        <Row>
-          <Carousel
-            style={{ backgroundColor: 'black', width: '100%', margin: 'auto' }}
-          >
-            {photos.map((photo, idx) => {
-              return (
-                <Carousel.Item key={photo.url}>
-                  <img
-                    onClick={() => {
-                      setLightBoxState(true);
-                      setLightBoxPhotoIndex(idx);
-                    }}
-                    src={photo.url}
-                    alt="carousel slide"
-                    style={{
-                      objectFit: 'scale-down',
-                      height: '500px',
-                      width: '100%',
-                    }}
-                  />
-                </Carousel.Item>
-              );
-            })}
-          </Carousel>
-          {lightBoxState && (
-            <Lightbox
-              mainSrc={photos[lightBoxPhotoIndex].url}
-              nextSrc={photos[(lightBoxPhotoIndex + 1) % photos.length].url}
-              prevSrc={
-                photos[(lightBoxPhotoIndex + photos.length - 1) % photos.length]
-                  .url
-              }
-              clickOutsideToClose
-              onCloseRequest={() => {
-                setLightBoxState(false);
-              }}
-              onMovePrevRequest={() =>
-                setLightBoxPhotoIndex(
-                  (lightBoxPhotoIndex + photos.length - 1) % photos.length,
-                )
-              }
-              onMoveNextRequest={() =>
-                setLightBoxPhotoIndex((lightBoxPhotoIndex + 1) % photos.length)
-              }
-            />
-          )}
-        </Row>
+      </Container>
+
+      <Carousel
+        style={{
+          backgroundColor: 'black',
+          width: '100%',
+          margin: 'auto',
+          marginBottom: '40px',
+        }}
+      >
+        {photos.map((photo, idx) => {
+          return (
+            <Carousel.Item key={photo.url}>
+              <img
+                onClick={() => {
+                  setLightBoxState(true);
+                  setLightBoxPhotoIndex(idx);
+                }}
+                src={photo.url}
+                alt="carousel slide"
+                style={{
+                  objectFit: 'scale-down',
+                  height: '600px',
+                  width: '100%',
+                }}
+              />
+            </Carousel.Item>
+          );
+        })}
+      </Carousel>
+      {lightBoxState && (
+        <Lightbox
+          mainSrc={photos[lightBoxPhotoIndex].url}
+          nextSrc={photos[(lightBoxPhotoIndex + 1) % photos.length].url}
+          prevSrc={
+            photos[(lightBoxPhotoIndex + photos.length - 1) % photos.length].url
+          }
+          clickOutsideToClose
+          onCloseRequest={() => {
+            setLightBoxState(false);
+          }}
+          onMovePrevRequest={() =>
+            setLightBoxPhotoIndex(
+              (lightBoxPhotoIndex + photos.length - 1) % photos.length,
+            )
+          }
+          onMoveNextRequest={() =>
+            setLightBoxPhotoIndex((lightBoxPhotoIndex + 1) % photos.length)
+          }
+        />
+      )}
+      <Container
+        style={{
+          backgroundColor: 'rgb(239, 247, 212, 0.2)',
+          textAlign: 'center',
+        }}
+      >
         <div style={{ width: '80%', display: 'inline-block' }}>
           <SectionList sections={sections} />
         </div>

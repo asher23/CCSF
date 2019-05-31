@@ -14,6 +14,8 @@ export function* register() {
     yield call(API.post, '/auth/register', formState);
     yield put(setRegisterStatus('successful'));
   } catch (e) {
+    console.log('errrros :', e);
+
     yield put(setRegisterStatus('error'));
     yield put(setError(e));
   }

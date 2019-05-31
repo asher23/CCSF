@@ -4,12 +4,19 @@
  *
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { NavLink } from 'react-router-dom';
-import { Navbar, Form, FormControl, Button, Nav } from 'react-bootstrap';
+import {
+  Navbar,
+  Form,
+  FormControl,
+  Button,
+  Nav,
+  Container,
+} from 'react-bootstrap';
 import { createStructuredSelector } from 'reselect';
 
 import { useInjectReducer } from 'utils/injectReducer';
@@ -30,107 +37,115 @@ export function NavBar(props) {
     dispatch(login(username, password));
   };
 
+  // useEffect(() => {}, [user]);
   const navLinkStyle = {
     textDecoration: 'none',
     marginRight: '10px',
-    color: 'black',
+    // color: 'black',
   };
   const activeStyle = {
     fontWeight: 'bold',
     color: 'white',
   };
+  // if (!user) return null;
   return (
     <Navbar
       fixed="top"
       style={{ height: '50px', marginBottom: '50px' }}
-      // bg="dark"
+      bg="dark"
       variant="dark"
     >
-      <Navbar.Brand>
-        <NavLink style={navLinkStyle} activeStyle={activeStyle} to="/home">
-          FCSF
-        </NavLink>
-      </Navbar.Brand>
-      <Nav className="mr-auto">
-        {authStatus === 'authenticated' ? (
-          <>
+      <Container style={{ backgroundColor: 'inherit' }}>
+        <Navbar.Brand>
+          <NavLink style={navLinkStyle} activeStyle={activeStyle} to="/home">
+            FCSF
+          </NavLink>
+        </Navbar.Brand>
+        <Nav className="mr-auto">
+          {authStatus === 'authenticated' ? (
+            <>
+              <Nav.Item>
+                <NavLink
+                  style={navLinkStyle}
+                  activeStyle={activeStyle}
+                  to="/guides"
+                >
+                  Guides
+                </NavLink>
+              </Nav.Item>
+              <Nav.Item>
+                <NavLink
+                  activeStyle={activeStyle}
+                  style={navLinkStyle}
+                  to="/codeLabs"
+                >
+                  CodeLabs
+                </NavLink>
+              </Nav.Item>
+              <Nav.Item>
+                <NavLink
+                  activeStyle={activeStyle}
+                  style={navLinkStyle}
+                  to={`/profile/${user.id}`}
+                >
+                  Profile
+                </NavLink>
+              </Nav.Item>
+              <Nav.Item>
+                <NavLink
+                  activeStyle={activeStyle}
+                  style={navLinkStyle}
+                  to="/settings"
+                >
+                  Settings
+                </NavLink>
+              </Nav.Item>
+            </>
+          ) : (
             <Nav.Item>
               <NavLink
-                style={navLinkStyle}
-                activeStyle={activeStyle}
-                to="/guides"
-              >
-                Guides
-              </NavLink>
-            </Nav.Item>
-            <Nav.Item>
-              <NavLink
                 activeStyle={activeStyle}
                 style={navLinkStyle}
-                to="/codeLabs"
+                to="/register"
               >
-                CodeLabs
+                Register
               </NavLink>
             </Nav.Item>
-            <Nav.Item>
-              <NavLink
-                activeStyle={activeStyle}
-                style={navLinkStyle}
-                to={`/profile/${user.id}`}
-              >
-                Profile
-              </NavLink>
-            </Nav.Item>
-            <Nav.Item>
-              <NavLink
-                activeStyle={activeStyle}
-                style={navLinkStyle}
-                to="/settings"
-              >
-                Settings
-              </NavLink>
-            </Nav.Item>
-          </>
-        ) : (
-          <Nav.Item>
-            <NavLink
-              activeStyle={activeStyle}
-              style={navLinkStyle}
-              to="/register"
-            >
-              Register
-            </NavLink>
-          </Nav.Item>
-        )}
-      </Nav>
+          )}
+        </Nav>
 
-      {authStatus !== 'authenticated' ? (
-        <Form onSubmit={e => onSubmit(e)} inline>
-          <FormControl
-            onChange={e => setUsername(e.target.value)}
-            required
-            type="text"
-            name="username"
-            className="mr-sm-2"
-            placeholder="Enter username"
-          />
-          <FormControl
-            onChange={e => setPassword(e.target.value)}
-            required
-            type="password"
-            name="password"
-            className="mr-sm-2"
-            placeholder="Enter password"
-          />
-          <Button name="login" type="submit">
-            Login
+        {authStatus !== 'authenticated' ? (
+          <Form onSubmit={e => onSubmit(e)} inline>
+            <FormControl
+              onChange={e => setUsername(e.target.value)}
+              required
+              type="text"
+              name="username"
+              className="mr-sm-2"
+              placeholder="Enter username"
+            />
+            <FormControl
+              onChange={e => setPassword(e.target.value)}
+              required
+              type="password"
+              name="password"
+              className="mr-sm-2"
+              placeholder="Enter password"
+            />
+            <Button name="login" type="submit">
+              Login
+            </Button>
+          </Form>
+        ) : (
+          <Button
+            name="logout"
+            type="button"
+            onClick={() => dispatch(logout())}
+          >
+            logout
           </Button>
-        </Form>
-      ) : (
-        <Button name="logout" type="button" onClick={() => dispatch(logout())}>
-          logout
-        </Button>
-      )}
+        )}
+      </Container>
     </Navbar>
   );
 }

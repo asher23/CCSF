@@ -58,6 +58,9 @@ export function GuideList(props) {
             Create Guide
           </Button>
         </Row>
+        <h3>
+          https://thedieline.com/blog/2019/5/28/if-design-exhibit-in-hamburg-puts-the-best-in-packaging-on-display
+        </h3>
         {showCreate && (
           <Row>
             <CreateGuideForm onSubmit={onCreateGuideSubmit} />

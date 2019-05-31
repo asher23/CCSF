@@ -4,8 +4,8 @@ import Section from './Section';
 export default function SectionList({ sections }) {
   return (
     <>
-      {sections.map(section => {
-        return <Section section={section} />;
+      {sections.map((section, idx) => {
+        return <Section section={section} secIndex={idx} />;
       })}
     </>
   );

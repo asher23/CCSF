@@ -125,7 +125,9 @@ export function Register(props) {
   };
 
   if (register.registerStatus === 'error' && register.error) {
-    const { errors } = register.error.response.data;
+    // const { errors } = register.error.response.data;
+    console.log(register.error);
+
     return (
       <div>
         <div>
@@ -134,7 +136,7 @@ export function Register(props) {
             Go back
           </button>
         </div>
-        {Object.values(errors).map(errorArr => {
+        {/* {Object.values(errors).map(errorArr => {
           return (
             <div>
               {errorArr.map(err => {
@@ -142,7 +144,7 @@ export function Register(props) {
               })}
             </div>
           );
-        })}
+        })} */}
       </div>
     );
   }

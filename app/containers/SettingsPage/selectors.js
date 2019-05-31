@@ -6,7 +6,7 @@ import { initialState } from './reducer';
  */
 
 const selectSettingsPageDomain = state => state.settingsPage || initialState;
-
+const selectApp = state => state.app;
 /**
  * Other specific selectors
  */
@@ -21,5 +21,10 @@ const makeSelectSettingsPage = () =>
     substate => substate,
   );
 
+const makeSelectApp = () =>
+  createSelector(
+    selectApp,
+    subState => subState,
+  );
 export default makeSelectSettingsPage;
-export { selectSettingsPageDomain };
+export { selectSettingsPageDomain, makeSelectApp };

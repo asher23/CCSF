@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+
 import {
   Nav,
   Tabs,
@@ -24,8 +25,9 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectSettingsPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
+import ProfileTab from './ProfileTab';
 
-export function SettingsPage() {
+export function SettingsPage({ settingsPage }) {
   useInjectReducer({ key: 'settingsPage', reducer });
   useInjectSaga({ key: 'settingsPage', saga });
 
@@ -33,13 +35,14 @@ export function SettingsPage() {
     <div className="background-for-container">
       <Container>
         <div
+          className="overflow-auto"
           style={{
             position: 'fixed',
             top: '50%',
             left: '50%',
             margin: 'auto',
             width: '70%',
-            height: '60vh',
+            height: '70vh',
             border: '6px solid black',
             transform: 'translate(-50%, -50%)',
             borderRadius: '10px',
@@ -55,10 +58,14 @@ export function SettingsPage() {
             id="uncontrolled-tab-example"
           >
             <Tab eventKey="home" title="Home">
-              <div style={{ height: '100%' }}>Hi!</div>
+              <div>Hi!</div>
             </Tab>
-            <Tab eventKey="profile" title="Profile">
-              <div>Hfefi!</div>
+            <Tab
+              // className="overflow-auto"
+              eventKey="profile"
+              title="Profile"
+            >
+              <ProfileTab />
             </Tab>
             <Tab eventKey="contact" title="Contact">
               <div>Hhgfdi!</div>

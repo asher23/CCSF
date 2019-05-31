@@ -60,15 +60,19 @@ export function ProfilePage({ profilePage, user, match, dispatch }) {
         <Col sm={4}>
           <img
             style={{ maxWidth: '100%', maxHeight: '200px' }}
-            src="https://images.unsplash.com/photo-1557436552-d1d884f1bb62?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1138&q=80"
+            src={
+              profile.photo && profile.photo.url
+                ? profile.photo.url
+                : 'https://images.unsplash.com/photo-1557436552-d1d884f1bb62?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1138&q=80'
+            }
             alt="profile"
           />
         </Col>
         <Col sm={8}>
-          <h3>Your information: </h3>
-          <h6>{user.firstName}</h6>
-          <h6>{user.lastName}</h6>
-          <h6>{user.email}</h6>
+          {/* <h3>Your information: </h3> */}
+          <h6>{profile.firstName}</h6>
+          <h6>{profile.lastName}</h6>
+          <h6>{profile.email}</h6>
         </Col>
       </Row>
       <Row>

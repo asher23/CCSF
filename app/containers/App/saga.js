@@ -17,11 +17,13 @@ export function* authenticate() {
     yield put(setAuthStatus('authenticating'));
     const response = yield call(API.get, 'auth/isAuthenticated');
     if (response.status === 200) {
-      yield put(setAuthStatus('authenticated'));
+      console.log('whats resposne here', response);
       yield put(setUser(response.data));
+      yield put(setAuthStatus('authenticated'));
     }
   } catch (e) {
     yield put(setAuthStatus(`unAuthenticated`));
+    console.log('or is it this one');
     yield put(setError(e));
   }
 }
@@ -32,12 +34,14 @@ export function* login() {
     yield put(setAuthStatus('authenticating'));
     const response = yield call(API.post, 'auth/login', formState);
     if (response.status === 200) {
-      yield put(setAuthStatus('authenticated'));
+      console.log('response', response);
       yield put(setUser(response.data));
+      yield put(setAuthStatus('authenticated'));
       history.push('/profile');
     }
   } catch (e) {
     yield put(setAuthStatus(`error`));
+    console.log('or osi this ', e);
     yield put(setError(e));
   }
 }
@@ -51,6 +55,7 @@ export function* logout() {
     }
   } catch (e) {
     yield put(setAuthStatus(`error`));
+    console.log('is this the erro being called');
     yield put(setError(e));
   }
 }

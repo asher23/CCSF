@@ -21,6 +21,10 @@ import GuideList from 'containers/GuideList';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Loading from 'components/Loading';
 import SettingsPage from 'containers/SettingsPage';
+import CodeLabList from 'containers/CodeLabList';
+import CodeLabPage from 'containers/CodeLabPage';
+
+import ProtectedRoute from 'components/ProtectedRoute';
 
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -29,7 +33,6 @@ import NavBar from './NavBar';
 import reducer from './reducer';
 import saga from './saga';
 import { authenticate } from './actions';
-import ProtectedRoute from './ProtectedRoute';
 import { makeSelectAuthStatus } from './selectors';
 export function App(props) {
   const { dispatch, authStatus } = props;
@@ -71,6 +74,8 @@ export function App(props) {
           />
           <Route exact path="/guides/:id" component={GuidePage} />
           <Route exact path="/guides" component={GuideList} />
+          <Route path="/codeLabs/:id" component={CodeLabPage} />
+          <Route exact path="/codeLabs" component={CodeLabList} />
           <Route path="/profile/:id" component={ProfilePage} />
           <Route exact path="/register" component={RegisterPage} />
           <Route path="/" component={HomePage} />
